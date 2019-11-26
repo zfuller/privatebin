@@ -67,14 +67,14 @@ languagedefault = "{{ private_bin_main_language_default }}"
 ; it is suggested to only use this with self-hosted shorteners as this will leak
 ; the pastes encryption key
 {% if private_bin_main_url_shortener is not none %}
-urlshortener = "{{private_bin_main_url_shortener}}"
+urlshortener = "{{ private_bin_main_url_shortener }}"
 {% else %}
 ; urlshortener = "https://shortener.example.com/api?link="
 {% endif %}
 
 ; (optional) Let users create a QR code for sharing the paste URL with one click.
 ; It works both when a new paste is created and when you view a paste.
-qrcode = {{private_bin_main_qrcode}}
+qrcode = {{ private_bin_main_qrcode }}
 
 
 ; (optional) IP based icons are a weak mechanism to detect if a comment was from
@@ -144,7 +144,7 @@ default = "{{ private_bin_expire_default }}"
 [traffic]
 ; time limit between calls from the same IP address in seconds
 ; Set this to 0 to disable rate limiting.
-limit = {{private_bin_traffic_limit}}
+limit = {{ private_bin_traffic_limit }}
 
 ; (optional) if your website runs behind a reverse proxy or load balancer,
 ; set the HTTP header containing the visitors IP address, i.e. X_FORWARDED_FOR
@@ -155,28 +155,28 @@ header = "{{ private_bin_traffic_header }}"
 {% endif %}
 
 ; directory to store the traffic limits in
-dir = PATH "{{private_bin_traffic_directory}}"
+dir = PATH "{{ private_bin_traffic_directory }}"
 
 [purge]
 ; minimum time limit between two purgings of expired pastes, it is only
 ; triggered when pastes are created
 ; Set this to 0 to run a purge every time a paste is created.
-limit = {{private_bin_purge_limit}}
+limit = {{ private_bin_purge_limit }}
 
 ; maximum amount of expired pastes to delete in one purge
 ; Set this to 0 to disable purging. Set it higher, if you are running a large
 ; site
-batchsize = {{private_bin_batchsize_limit}}
+batchsize = {{ private_bin_batchsize_limit }}
 
 ; directory to store the purge limit in
-dir = PATH "{{private_bin_purge_directory}}"
+dir = PATH "{{ private_bin_purge_directory }}"
 
 {% if private_bin_model_class == "Filesystem" and private_bin_model_fs_option_directory is not none %}
 
 [model]
 class = Filesystem
 [model_options]
-dir = PATH "{{private_bin_model_fs_option_directory}}"
+dir = PATH "{{ private_bin_model_fs_option_directory }}"
 
 {% elif private_bin_model_class == "MySql" and
 private_bin_model_mysql_option_dsn is not none and

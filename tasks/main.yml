@@ -8,14 +8,14 @@
     group: "{{ private_bin_web_group }}"
 - name: extract privatebin
   unarchive:
-    src: "{{ private_bin_repo }}/archive/{{private_bin_version}}.{{private_bin_archive_format}}"
+    src: "{{ private_bin_repo }}/archive/{{ private_bin_version }}.{{ private_bin_archive_format }}"
     dest: "{{ private_bin_www_directory }}"
     owner: "{{ private_bin_web_user }}"
     group: "{{ private_bin_web_group }}"
     remote_src: yes
 - name: moving files around
   shell:
-    cmd: "rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}/* {{ private_bin_www_directory }} && rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}/.* {{ private_bin_www_directory }}"
+    cmd: "rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}/* {{ private_bin_www_directory }} && rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}/.* {{ private_bin_www_directory }}"
 - name: Setting up config file
   template:
     src: templates/conf.php.j2
@@ -25,5 +25,5 @@
     mode: 0640
 - name: cleanup
   file:
-    path: "{{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}"
+    path: "{{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}"
     state: absent
