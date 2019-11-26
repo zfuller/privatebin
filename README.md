@@ -1,4 +1,4 @@
-# Privatebin Role
+# PrivateBin Role
 
 Role installs and configures PrivateBin https://privatebin.info/
 
