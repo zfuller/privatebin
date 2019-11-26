@@ -74,12 +74,10 @@ private_bin_model_sqlite3_option_opt:
 ```
 
 ## Dependencies
-------------
 
 None
 
-Example Playbook
-----------------
+## Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
@@ -114,7 +112,6 @@ private_bin_expire_options:
     seconds: 3600
 ```
 
-License
--------
+## License
 
 GPLv2
