@@ -7,9 +7,9 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - 16.04
-        - 18.04
-        - 20.04
+        - trusty
+        - xenial
+        - bionic
   galaxy_tags:
     - privatebin
     - pastebin
