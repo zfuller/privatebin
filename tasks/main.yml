@@ -1,0 +1,29 @@
+---
+- name: making directories
+  file:
+    path: "{{ private_bin_www_directory }}"
+    state: directory
+    mode: 0750
+    owner: "{{ private_bin_web_user }}"
+    group: "{{ private_bin_web_group }}"
+- name: extract privatebin
+  unarchive:
+    src: "{{ private_bin_repo }}/archive/{{private_bin_version}}.{{private_bin_archive_format}}"
+    dest: "{{ private_bin_www_directory }}"
+    owner: "{{ private_bin_web_user }}"
+    group: "{{ private_bin_web_group }}"
+    remote_src: yes
+- name: moving files around
+  shell:
+    cmd: "rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}/* {{ private_bin_www_directory }} && rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}/.* {{ private_bin_www_directory }}"
+- name: Setting up config file
+  template:
+    src: templates/conf.php.j2
+    dest: "{{ private_bin_www_directory }}/cfg/conf.php"
+    owner: "{{ private_bin_web_user }}"
+    group: "{{ private_bin_web_group }}"
+    mode: 0640
+- name: cleanup
+  file:
+    path: "{{ private_bin_www_directory }}/PrivateBin-{{private_bin_version}}"
+    state: absent
