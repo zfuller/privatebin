@@ -14,8 +14,7 @@
     group: "{{ private_bin_web_group }}"
     remote_src: yes
 - name: moving files around
-  shell:
-    cmd: "rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}/* {{ private_bin_www_directory }} && rsync -a --delete-after {{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}/.* {{ private_bin_www_directory }}"
+  shell: "mv {{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}/* {{ private_bin_www_directory }}"
 - name: Setting up config file
   template:
     src: templates/conf.php.j2
