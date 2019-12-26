@@ -1,4 +1,8 @@
 ---
+- name: checking some things
+  stat:
+    path: "{{ private_bin_www_directory }}/index.php"
+  register: privatebin_existing
 - name: making directories
   file:
     path: "{{ private_bin_www_directory }}"
@@ -6,6 +10,7 @@
     mode: 0750
     owner: "{{ private_bin_web_user }}"
     group: "{{ private_bin_web_group }}"
+  when: privatebin_existing.stat.exists == False
 - name: extract privatebin
   unarchive:
     src: "{{ private_bin_repo }}/archive/{{ private_bin_version }}.{{ private_bin_archive_format }}"
@@ -13,10 +18,12 @@
     owner: "{{ private_bin_web_user }}"
     group: "{{ private_bin_web_group }}"
     remote_src: yes
+  when: privatebin_existing.stat.exists == False
 - name: moving files around
   shell:
     chdir: "{{ private_bin_www_directory }}"
     cmd: "mv PrivateBin-{{ private_bin_version }}/* ."
+  when: privatebin_existing.stat.exists == False
 - name: Setting up config file
   template:
     src: templates/conf.php.j2
@@ -28,3 +35,4 @@
   file:
     path: "{{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}"
     state: absent
+  when: privatebin_existing.stat.exists == False
