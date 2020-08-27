@@ -3,6 +3,20 @@
   stat:
     path: "{{ private_bin_www_directory }}/index.php"
   register: privatebin_existing
+
+- name: include distro variables for package installs
+  include_vars:
+    file: "{{ ansible_distribution }}/{{ ansible_distribution_release }}/packages.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: install libsodium packages
+  apt:
+    name: "{{ libsodium_packages }}"
+    update_cache: yes
+  when:
+    - private_bin_install_libsodium == true
+    - ansible_distribution == 'Ubuntu'
+
 - name: making directories
   file:
     path: "{{ private_bin_www_directory }}"
@@ -11,6 +25,7 @@
     owner: "{{ private_bin_web_user }}"
     group: "{{ private_bin_web_group }}"
   when: privatebin_existing.stat.exists == False
+
 - name: extract privatebin
   unarchive:
     src: "{{ private_bin_repo }}/archive/{{ private_bin_version }}.{{ private_bin_archive_format }}"
@@ -19,11 +34,13 @@
     group: "{{ private_bin_web_group }}"
     remote_src: yes
   when: privatebin_existing.stat.exists == False
+
 - name: moving files around
   shell:
     chdir: "{{ private_bin_www_directory }}"
     cmd: "mv PrivateBin-{{ private_bin_version }}/* ."
   when: privatebin_existing.stat.exists == False
+
 - name: Setting up config file
   template:
     src: templates/conf.php.j2
@@ -31,6 +48,7 @@
     owner: "{{ private_bin_web_user }}"
     group: "{{ private_bin_web_group }}"
     mode: 0640
+
 - name: cleanup
   file:
     path: "{{ private_bin_www_directory }}/PrivateBin-{{ private_bin_version }}"
